@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# get ethN
+# get ethn
 get_ethn()
 {
 	ip link |\
@@ -13,8 +13,8 @@ get_ethn()
 get_conf()
 {
 	ethns='ethn'
-	echo 'PORT\tLINKED\tMAC\t\t\tIP' 
-	echo "===================================================="
+	printf "PORT\tLINKED\tMAC\t\t\tIP\n" 
+	printf "====================================================\n"
 	while read line
 	do
 		# get mac
@@ -31,18 +31,27 @@ get_conf()
 		    grep -i detected |\
 		    awk -F " " '{ print $3 }'`
 		
-		echo -n ${line}
-	        echo -n '\t'
-		echo -n ${linked}
-	        echo -n '\t'
-		echo -n ${mac}
-	        echo -n '\t'
-		echo ${ip}
+		printf "${line}"
+	        printf "\t"
+		printf "${linked}"
+	        printf "\t"
+		printf "${mac}"
+	        printf "\t"
+		printf "${ip}\n"
 	done < ${ethns}
-	echo "===================================================="
+	printf "====================================================\n"
 }
 
-clear
-get_ethn
-get_conf
-rm -f ethn
+main()
+{
+	clear
+	if [ `id -u` -ne "0" ]; then
+		printf "You must run as root.\n"
+		exit 1
+	fi
+	get_ethn
+	get_conf
+	rm -f ethn
+}
+
+main
