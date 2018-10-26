@@ -6,22 +6,31 @@ import os
 import sys
 
 def usage():
-	'''
+	"""
 	1. export github_password='your_github_password'
 	2. ./git_push.py
-	'''
+	"""
 	print('''
-	Usage:
-	  ./git_push.py
-	Note:
-	  you should set your github password in current shell
-	  e.g. export github_password='your_github_password'
-	''')
+Usage:
+    ./git_push.py
+Note:
+    you should set your github password in current shell
+    e.g. export github_password='your_github_password'
+    ''')
 
-def push():
+def do_push():
+    """Push local modifications to remote repository.
+
+    Args:
+        None.
+    Returns:
+        None.
+    Raises:
+        None.
+    """
 	password = os.getenv('github_password')
-	if password == None:
-		print('your github password parameter is not set yet')
+	if not password:
+		print('your github password is not set yet')
 		usage()
 		sys.exit(1)
 	cmd = 'git push'
@@ -40,7 +49,7 @@ def push():
 	git.interact()
 
 def main():
-	push()
+	do_push()
 
 if __name__ == '__main__':
 	main()
